@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/MSRequests.API/Controllers/WeatherForecastController.cs
+/MSRequests.Domain/Class1.cs
+/MSRequests.Domain/IRepositories/IToDoRepository.cs
+/MSRequests.Domain/Models/ToDoItem.cs
+/MSRequests.Infrastructure/Class1.cs
+/MSRequests.Application/Class1.cs

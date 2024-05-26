@@ -4,10 +4,16 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MSRequests.Domain\MSRequests.Domain.csproj" />
+    <ProjectReference Include="..\MSRequests.Infrastructure\MSRequests.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
