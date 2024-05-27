@@ -64,6 +64,7 @@ namespace MSRequests.Infrastructure.Repositries
 
         public async Task<ServiceRequestDTO> GetServiceRequestByIdAsync(Guid Id)
         {
+           
             var result = (from SR in _DBContext.ServiceRequest.Where(s => s.ID == Id).ToList()
                           join user in _DBContext.Users on SR.AssignedToID equals user.Id
                           join createdBy in _DBContext.Users on SR.CreatedBy equals new Guid(createdBy.Id)

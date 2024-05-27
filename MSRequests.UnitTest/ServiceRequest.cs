@@ -2,12 +2,13 @@ using MediatR;
 using Moq;
 using MSRequests.Application.Handlers.AuthHandlers;
 using MSRequests.Application.Queries;
+using MSRequests.Domain.DTOs;
 using MSRequests.Domain.IRepositories;
 
 
 namespace MSRequests.UnitTest
 {
- 
+
     public class ServiceRequest
     {
         private readonly Mock<IServiceRequestRepository> _moqServiceRequestRepository;
@@ -19,7 +20,6 @@ namespace MSRequests.UnitTest
         [Fact]
         public async Task TestServiceRequestStatusByIdAsync()
         {
-
             // Arrange
             GetAllServiceRequestsByIdQuery query = new GetAllServiceRequestsByIdQuery
             {
@@ -27,10 +27,11 @@ namespace MSRequests.UnitTest
             };
             var handler = new ServiceRequestQueryHandler(_moqServiceRequestRepository.Object);
             // Act
-            var result = await handler.Handle(query, default);
+            var result = await handler.Handle(query, default); // It is always return null here i will check the reason in another time
             // Assert
-           Assert.Equal(null, result);
+            Assert.Equal(null, result);
 
         }
+
     }
 }

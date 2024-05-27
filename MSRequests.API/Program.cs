@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using MSRequests.API.Middlewares;
 using MSRequests.Application;
 using MSRequests.Domain.DTOs;
 using MSRequests.Domain.IRepositories;
@@ -30,15 +31,15 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
-        Description = "JWT Authorization",
+        Description = "",
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer",
         In = ParameterLocation.Header,
         BearerFormat = "JWT"
     });
-   
 
-   c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
         {
             new OpenApiSecurityScheme {
                 Reference = new OpenApiReference {
@@ -55,7 +56,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 builder.Services.AddApplicationDependencies();
 builder.Services.AddScoped<IUserRepository, UserRepositroy>();
 builder.Services.AddScoped<IServiceRequestRepository, ServiceRequestRepositroy>();
-
+builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -65,7 +66,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
