@@ -13,12 +13,13 @@ namespace MSRequests.Domain.Models
 {
     public class ServiceRequest:BaseEntity
     {
-       
+
+        [Required]
         public string RequestNumber { get; set; }
        
         [Required]
         public string RequestDescription { get; set; }
-
+        public bool ReadOnly { get; set; }
         [Required]
         [MaxLength(50)]
         public string RequestType { get; set; }
@@ -30,8 +31,8 @@ namespace MSRequests.Domain.Models
         public string? AssignedToID { get; set; }
         [ForeignKey("AssignedToID")]
         public IdentityUser AssignedTo { get; set; }
-        public ICollection<RequestHistory> requestHistories { get; set; }
+        public virtual ICollection<RequestHistory> requestHistories { get; set; }
 
-
+        public virtual ICollection<ServiceRequestAttahcments> ServiceRequestAttahcments { get; set; }
     }
 }

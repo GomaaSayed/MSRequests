@@ -108,8 +108,8 @@ namespace MSRequests.Infrastructure.Repositries
             .Union(userClaims)
             .Union(roleClaims);
 
-           // var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
-          //  var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
+            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
             var expirsOn = DateTime.Now.AddMinutes(_jwt.DurationInMins);
 

@@ -22,5 +22,6 @@ namespace MSRequests.Application.Commands
         public required int StatusID { get; set; } // e.g., 'Open', 'In Progress', 'Closed', 'On Hold',;Draft;
         public required int PriorityID { get; set; }  // e.g., 'Low', 'Medium', 'High'
         public required string AssignedToID { get; set; }
+        public required bool ReadOnly { get; set; }
     }
 }

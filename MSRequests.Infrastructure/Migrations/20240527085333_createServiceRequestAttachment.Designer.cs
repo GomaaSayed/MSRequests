@@ -4,6 +4,7 @@ using MSRequests.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MSRequests.Infrastructure.Migrations
 {
     [DbContext(typeof(MSRDBContext))]
-    partial class MSRDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240527085333_createServiceRequestAttachment")]
+    partial class createServiceRequestAttachment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +50,9 @@ namespace MSRequests.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("RequestID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ServiceRequestID")
                         .HasColumnType("uniqueidentifier");
 
@@ -55,7 +61,7 @@ namespace MSRequests.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ServiceRequestID");
+                    b.HasIndex("RequestID");
 
                     b.ToTable("RequestHistory");
                 });
@@ -139,12 +145,15 @@ namespace MSRequests.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("RequestID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ServiceRequestID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ServiceRequestID");
+                    b.HasIndex("RequestID");
 
                     b.ToTable("ServiceRequestAttahcments");
                 });
@@ -351,7 +360,7 @@ namespace MSRequests.Infrastructure.Migrations
                 {
                     b.HasOne("MSRequests.Domain.Models.ServiceRequest", "ServiceRequest")
                         .WithMany("requestHistories")
-                        .HasForeignKey("ServiceRequestID")
+                        .HasForeignKey("RequestID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -372,10 +381,8 @@ namespace MSRequests.Infrastructure.Migrations
             modelBuilder.Entity("MSRequests.Domain.Models.ServiceRequestAttahcments", b =>
                 {
                     b.HasOne("MSRequests.Domain.Models.ServiceRequest", "ServiceRequest")
-                        .WithMany("ServiceRequestAttahcments")
-                        .HasForeignKey("ServiceRequestID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("RequestID");
 
                     b.Navigation("ServiceRequest");
                 });
@@ -433,8 +440,6 @@ namespace MSRequests.Infrastructure.Migrations
 
             modelBuilder.Entity("MSRequests.Domain.Models.ServiceRequest", b =>
                 {
-                    b.Navigation("ServiceRequestAttahcments");
-
                     b.Navigation("requestHistories");
                 });
 #pragma warning restore 612, 618

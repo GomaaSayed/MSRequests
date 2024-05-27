@@ -18,6 +18,7 @@ namespace MSRequests.Infrastructure.Contexts
     {
         public MSRDBContext(DbContextOptions<MSRDBContext> options) : base(options) { }
         public DbSet<ServiceRequest> ServiceRequest { get; set; }
+        public DbSet<ServiceRequestAttahcments> ServiceRequestAttahcments { get; set; }
         public DbSet<RequestHistory> RequestHistory { get; set; }
     
 

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace MSRequests.Application.Handlers
 {
     public class ServiceRequestCommandHandler(IServiceRequestRepository serviceRequestRepository)
-     : IRequestHandler<SaveServiceRequestCommand, Response<string>>, IRequestHandler<DeleteServiceRequestCommand, Response<string>>
+     : IRequestHandler<SaveServiceRequestCommand, Response<string>>, IRequestHandler<DeleteServiceRequestCommand, Response<string>>, IRequestHandler<ServiceRequestUploadFilesCommand, Response<string>>
     {
 
 
@@ -26,6 +26,7 @@ namespace MSRequests.Application.Handlers
             var ServiceRequest = new ServiceRequest
             {
                 ID = request.Id,
+                ReadOnly = request.ReadOnly,
                 RequestNumber = request.RequestNumber,
                 AssignedToID = request.AssignedToID,
                 PriorityID = request.PriorityID,
@@ -40,6 +41,11 @@ namespace MSRequests.Application.Handlers
         public Task<Response<string>> Handle(DeleteServiceRequestCommand request, CancellationToken cancellationToken)
         {
             return serviceRequestRepository.DeleteServiceRequestAsync(request.ServiceRequestId);
+        }
+
+        public async Task<Response<string>> Handle(ServiceRequestUploadFilesCommand request, CancellationToken cancellationToken)
+        {
+            return await serviceRequestRepository.SaveServiceRequestAttachmentsAsync(request.listOfAttachments);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MSRequests.Application.Commands.AuthCommands;
@@ -8,6 +9,7 @@ namespace MSRequests.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class UserController(IMediator mediator) : ControllerBase
     {
         [HttpPost("Login")]

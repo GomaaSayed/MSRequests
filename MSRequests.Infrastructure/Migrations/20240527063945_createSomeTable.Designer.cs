@@ -4,6 +4,7 @@ using MSRequests.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MSRequests.Infrastructure.Migrations
 {
     [DbContext(typeof(MSRDBContext))]
-    partial class MSRDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240527063945_createSomeTable")]
+    partial class createSomeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,10 +31,17 @@ namespace MSRequests.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ChangedByID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateChanged")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -47,6 +57,9 @@ namespace MSRequests.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("RequestID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ServiceRequestID")
                         .HasColumnType("uniqueidentifier");
 
@@ -55,7 +68,7 @@ namespace MSRequests.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ServiceRequestID");
+                    b.HasIndex("RequestID");
 
                     b.ToTable("RequestHistory");
                 });
@@ -88,9 +101,6 @@ namespace MSRequests.Infrastructure.Migrations
                     b.Property<int>("PriorityID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("ReadOnly")
-                        .HasColumnType("bit");
-
                     b.Property<string>("RequestDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -112,41 +122,6 @@ namespace MSRequests.Infrastructure.Migrations
                     b.HasIndex("AssignedToID");
 
                     b.ToTable("ServiceRequest");
-                });
-
-            modelBuilder.Entity("MSRequests.Domain.Models.ServiceRequestAttahcments", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("FileContent")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ServiceRequestID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ServiceRequestID");
-
-                    b.ToTable("ServiceRequestAttahcments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -351,7 +326,7 @@ namespace MSRequests.Infrastructure.Migrations
                 {
                     b.HasOne("MSRequests.Domain.Models.ServiceRequest", "ServiceRequest")
                         .WithMany("requestHistories")
-                        .HasForeignKey("ServiceRequestID")
+                        .HasForeignKey("RequestID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -367,17 +342,6 @@ namespace MSRequests.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("AssignedTo");
-                });
-
-            modelBuilder.Entity("MSRequests.Domain.Models.ServiceRequestAttahcments", b =>
-                {
-                    b.HasOne("MSRequests.Domain.Models.ServiceRequest", "ServiceRequest")
-                        .WithMany("ServiceRequestAttahcments")
-                        .HasForeignKey("ServiceRequestID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ServiceRequest");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -433,8 +397,6 @@ namespace MSRequests.Infrastructure.Migrations
 
             modelBuilder.Entity("MSRequests.Domain.Models.ServiceRequest", b =>
                 {
-                    b.Navigation("ServiceRequestAttahcments");
-
                     b.Navigation("requestHistories");
                 });
 #pragma warning restore 612, 618

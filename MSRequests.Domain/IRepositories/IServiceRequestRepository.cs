@@ -15,5 +15,6 @@ namespace MSRequests.Domain.IRepositories
         Task<Response<string>> DeleteServiceRequestAsync(Guid Id);
         Task<ServiceRequestDTO> GetServiceRequestByIdAsync(Guid Id);
         Task<IEnumerable<ServiceRequestDTO>> GetAllServiceRequestAsync();
+        Task<Response<string>> SaveServiceRequestAttachmentsAsync(List<ServiceRequestAttahcments> serviceRequestAttahcments);
     }
 }
